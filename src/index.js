@@ -1,9 +1,14 @@
-const axios = require('axios').default;
+const express = require( "express" );
+const app = express();
+const port = process.env.PORT || 3000;
 
-const sayHey = (name) => {
-    return `Hey ${name}`
-}
 
-module.exports = {
-    sayHey
-}
+app.get( "/", ( req, res ) => {
+    res.send( "Hello World!" );
+});
+
+const server = app.listen( port, () => {
+    console.log( `Example app listening on port ${port}` );
+});
+
+module.exports = server;
