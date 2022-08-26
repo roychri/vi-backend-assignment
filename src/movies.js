@@ -9,7 +9,12 @@ const instance = axios.create({
 });
 const dataForQuestions = require( "../dataForQuestions" );
 
+const cache = {};
+
 async function getMoviesPerActor() {
+    if ( "getMoviesPerActor" in cache ) {
+        return cache["getMoviesPerActor"];
+    }
     let combinedCast = [];
     for ( const [ , movieId ] of Object.entries( dataForQuestions.movies ) ) {
         const mainCast = await getMainCastForMovie( movieId );
@@ -36,6 +41,7 @@ async function getMoviesPerActor() {
         }
         return acc;
     }, {});
+    cache["getMoviesPerActor"] = moviesPerActor;
     return moviesPerActor;
 }
 
