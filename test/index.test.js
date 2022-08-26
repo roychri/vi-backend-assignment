@@ -33,3 +33,12 @@ describe('Get /moviesPerActor', () => {
         });
     });
 });
+
+describe('Get /actorsWithMultipleCharacters', () => {
+    it('should return an object', async function() {
+        const res = await request(server)
+            .get('/actorsWithMultipleCharacters');
+        expect(res.statusCode).toEqual(200)
+        expect(typeof res.body).toBe('object');
+    });
+});

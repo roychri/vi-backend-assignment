@@ -11,6 +11,17 @@ const dataForQuestions = require( "../dataForQuestions" );
 
 const cache = {};
 
+async function getActorsWithMultipleCharacters() {
+    const response = await getMoviesPerActor();
+    return Object.entries( response ).reduce( ( acc, cast ) => {
+        const [ actorName, characters ] = cast;
+        if ( characters.length > 1 ) {
+            acc[actorName] = characters;
+        }
+        return acc;
+    }, {});
+}
+
 async function getMoviesPerActor() {
     if ( "getMoviesPerActor" in cache ) {
         return cache["getMoviesPerActor"];
@@ -74,5 +85,6 @@ function similarity( s1, s2 ) {
 }
 
 module.exports = {
+    getActorsWithMultipleCharacters,
     getMoviesPerActor,
 };
