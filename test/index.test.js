@@ -35,10 +35,24 @@ describe( "Get /moviesPerActor", () => {
 });
 
 describe( "Get /actorsWithMultipleCharacters", () => {
-    it( "should return an object", async function() {
-        const res = await request( server )
+    beforeEach( async function() {
+        this.res = await request( server )
             .get( "/actorsWithMultipleCharacters" );
-        expect( res.statusCode ).toEqual( 200 );
-        expect( typeof res.body ).toBe( "object" );
+    });
+    it( "should return an object", async function() {
+        expect( this.res.statusCode ).toEqual( 200 );
+        expect( typeof this.res.body ).toBe( "object" );
+    });
+    it( "should only return two actors", function() {
+        const actorNames = Object.keys( this.res.body );
+        expect( actorNames ).toHaveLength( 2 );
+    });
+    it( "should return Chris Evans", function () {
+        const actorNames = Object.keys( this.res.body );
+        expect( actorNames.includes( "Chris Evans" ) ).toBe( true );
+    });
+    it( "should return Michael B. Jordan", function() {
+        const actorNames = Object.keys( this.res.body );
+        expect( actorNames.includes( "Michael B. Jordan" ) ).toBe( true );
     });
 });
