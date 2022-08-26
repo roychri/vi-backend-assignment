@@ -1,14 +1,5 @@
-const axios = require( "axios" ).default;
-
-const instance = axios.create({
-    baseURL: process.env.MOVIEDB_URL || "https://api.themoviedb.org/3",
-    timeout: 1000,
-    params: {
-        api_key: process.env.MOVIEDB_API_KEY
-    }
-});
+const axios = require( "./axios" );
 const dataForQuestions = require( "../dataForQuestions" );
-
 const cache = {};
 
 async function getActorsWithMultipleCharacters() {
@@ -58,7 +49,7 @@ async function getMoviesPerActor() {
 
 async function getMainCastForMovie( movieId ) {
     const url = `/movie/${movieId}/credits`;
-    const resp = await instance( url );
+    const resp = await axios( url );
     const mainCast = resp.data.cast.filter( person => {
         const name = person.original_name;
         return dataForQuestions.actors.includes( name );
