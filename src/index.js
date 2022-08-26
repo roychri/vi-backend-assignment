@@ -28,8 +28,9 @@ app.get( "/actorsWithMultipleCharacters", async ( req, res ) => {
     }
 });
 
-const server = app.listen( port, () => {
-    console.log( `Example app listening on port ${port}` );
-});
-
-module.exports = server;
+if ( process.env.NODE_ENV !== "test" ) {
+    app.listen( port, () => {
+        console.log( `Example app listening on port ${port}` );
+    });
+}
+module.exports = app;
