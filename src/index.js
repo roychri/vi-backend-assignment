@@ -10,7 +10,11 @@ app.get( "/", ( req, res ) => {
 
 app.get( "/moviesPerActor", async ( req, res ) => {
     try {
-        const response = await getMoviesPerActor();
+        const actors = await getMoviesPerActor();
+        const response = {};
+        for ( const actorName in actors ) {
+            response[actorName] = actors[actorName].map( m => m.movieName );
+        }
         res.json( response );
     } catch ( err ) {
         console.log( err );

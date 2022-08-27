@@ -18,8 +18,8 @@ async function getMoviesPerActor() {
         return cache["getMoviesPerActor"];
     }
     let combinedCast = [];
-    for ( const [ , movieId ] of Object.entries( dataForQuestions.movies ) ) {
-        const mainCast = await getMainCastForMovie( movieId );
+    for ( const [ movieName, movieId ] of Object.entries( dataForQuestions.movies ) ) {
+        const mainCast = await getMainCastForMovie( movieName, movieId );
         combinedCast = combinedCast.concat( mainCast );
     }
     const moviesPerActor = combinedCast.reduce( ( acc, person ) => {
@@ -28,17 +28,23 @@ async function getMoviesPerActor() {
         if ( !acc[name].includes( person.character ) ) {
             if ( acc[name].length > 0 ) {
                 let found = false;
-                for ( const eachName of acc[name] ) {
-                    const similar = similarity( person.character, eachName );
+                for ( const each of acc[name] ) {
+                    const similar = similarity( person.character, each.characterName );
                     if ( similar ) {
                         found = true;
                     }
                 }
                 if ( !found ) {
-                    acc[name].push( person.character );
+                    acc[name].push({
+                        movieName: person.movieName,
+                        characterName: person.character
+                    });
                 }
             } else {
-                acc[name].push( person.character );
+                acc[name].push({
+                    movieName: person.movieName,
+                    characterName: person.character
+                });
             }
         }
         return acc;
@@ -47,14 +53,17 @@ async function getMoviesPerActor() {
     return moviesPerActor;
 }
 
-async function getMainCastForMovie( movieId ) {
+async function getMainCastForMovie( movieName, movieId ) {
     const url = `/movie/${movieId}/credits`;
     const resp = await axios( url );
     const mainCast = resp.data.cast.filter( person => {
         const name = person.original_name;
         return dataForQuestions.actors.includes( name );
     });
-    return mainCast;
+    return mainCast.map( entry => {
+        entry.movieName = movieName;
+        return entry;
+    });
 }
 
 function similarity( s1, s2 ) {
