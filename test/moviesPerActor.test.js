@@ -2,10 +2,6 @@ const request = require( "supertest" );
 const server = require( "../src" );
 const dataForQuestions = require( "../dataForQuestions" );
 
-//afterAll( async () => {
-//    await server.close();
-//});
-
 let res;
 
 describe( "Get /moviesPerActor", () => {
