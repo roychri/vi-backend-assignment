@@ -1,10 +1,15 @@
 # Vi Coding Assignment 
 
-__Writing what this project does...__
+Provides two endpoints in order to determine which actors played more than a single leading role in marvel movies.
+
+* GET /moviesPerActor
+* GET /actorsWithMultipleCharacters
 
 ## Tools
-- Jest for testing
-- __List additional tools you used...__
+- Jest and supertest for testing
+- Eslint for clean code
+- Express for exposing the API endpoints
+- Axios to query themoviedb api
 
 ## Getting Started
 
@@ -26,4 +31,18 @@ npm test
 
 ### How to use
 
-__Describe how to use the project: starting the server, using endpoints, etc.__
+Start the server and specify the secret API key value:
+
+```shell
+MOVIEDB_API_KEY=abc123......789yxz node src
+```
+
+On a separate terminal, you can query the endpoints like:
+
+```
+curl localhost:3000/moviesPerActor
+curl localhost:3000/actorsWithMultiple
+```
+
+This way you will see which actors plays more than one leading role.
+
